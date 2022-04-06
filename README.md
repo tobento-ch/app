@@ -26,6 +26,7 @@ You might get started with the [**App Skeleton**](https://github.com/tobento-ch/
        - [Error Handling Boot](#error-handling-boot)
        - [Dater Boot](#dater-boot)
     - [Handle Boot Errors](#handle-boot-errors)
+    - [Customization](#customization)
 - [Credits](#credits)
 ___
 
@@ -434,6 +435,100 @@ $app->run();
 ```
 
 Check out the [**Throwable Handlers**](https://github.com/tobento-ch/service-error-handler#throwable-handlers) to learn more about handlers in general.
+
+## Customization
+
+Some boots might implement interfaces on their boot method such as the [**app http boot**](https://github.com/tobento-ch/app-http#http-boot). There are several ways to change its implementations. But we need to keep in mind that other boots might have [**dependent boots**](https://github.com/tobento-ch/service-booting#dependent-boot) defined.
+
+**Using the app on method**
+
+```php
+use Tobento\App\Boot;
+use Tobento\App\Http\Boot\Http;
+use Psr\Http\Message\ResponseFactoryInterface;
+
+class CustomBoot extends Boot
+{
+    public function boot(): void
+    {
+        $this->app->on(
+            ResponseFactoryInterface::class,
+            \Laminas\Diactoros\ResponseFactory::class
+        );
+    }
+}
+
+$app = (new AppFactory())->createApp();
+
+$app->boot(CustomBoot::class);
+
+$app->run();
+```
+
+**Boot extending**
+
+```php
+use Tobento\App\Boot;
+use Tobento\App\Http\Boot\Http;
+use Tobento\App\Migration\Boot\Migration;
+use Psr\Http\Message\ResponseFactoryInterface;
+
+class CustomHttpBoot extends Http
+{
+    /**
+     * Boot application services.
+     *
+     * @param Migration $migration
+     * @return void
+     */
+    public function boot(Migration $migration): void
+    {
+        parent::boot($migration);
+        
+        // set your custom implementations.
+        $this->app->set(
+            ResponseFactoryInterface::class,
+            \Laminas\Diactoros\ResponseFactory::class
+        );
+    }
+}
+
+$app = (new AppFactory())->createApp();
+
+$app->on(Http::class, CustomHttpBoot::class);
+
+$app->run();
+```
+
+**Boot implementation overwriting**
+
+```php
+use Tobento\App\Boot;
+use Tobento\App\Http\Boot\Http;
+use Psr\Http\Message\ResponseFactoryInterface;
+
+class CustomBoot extends Boot
+{
+    public const BOOT = [
+        Http::class,
+    ];
+    
+    public function boot(Http $http): void
+    {
+        // set your custom implementations.
+        $this->app->set(
+            ResponseFactoryInterface::class,
+            \Laminas\Diactoros\ResponseFactory::class
+        );
+    }
+}
+
+$app = (new AppFactory())->createApp();
+
+$app->boot(CustomBoot::class);
+
+$app->run();
+```
 
 # Credits
 
