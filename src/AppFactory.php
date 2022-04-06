@@ -48,8 +48,8 @@ class AppFactory implements AppFactoryInterface
         $dirs = $dirs ?: new Dirs();
         
         $booter = $booter ?: new Booter(
-            //bootFactory: new AppBootFactory($resolver),
-            bootFactory: new AutowiringBootFactory($resolver->container()),
+            bootFactory: new AppBootFactory($resolver),
+            //bootFactory: new AutowiringBootFactory($resolver->container()),
             name: 'app',
             bootMethods: ['boot'],
             terminateMethods: ['terminate'],
