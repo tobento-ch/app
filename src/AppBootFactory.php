@@ -67,7 +67,11 @@ class AppBootFactory implements BootFactoryInterface
         }    
         
         try {
-            $boot = $this->resolver->make($boot, $parameters);
+            if ($this->resolver->has($boot)) {
+                $boot = $this->resolver->get($boot);
+            } else {
+                $boot = $this->resolver->make($boot, $parameters);
+            }
         } catch (Throwable $e) {
             throw new InvalidBootException($boot, $e->getMessage());
         }
