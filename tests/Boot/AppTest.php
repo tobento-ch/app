@@ -26,7 +26,7 @@ class AppTest extends TestCase
     {
         $app = (new AppFactory())->createApp();
         
-        $app->dirs()->dir(dir: __DIR__.'/../config', name: 'config', group: 'config');
+        $app->dirs()->dir(dir: realpath(__DIR__.'/../config'), name: 'config', group: 'config');
         
         $app->boot(\Tobento\App\Boot\App::class);
 
@@ -58,7 +58,7 @@ class AppTest extends TestCase
     {
         $app = (new AppFactory())->createApp();
         
-        $app->dirs()->dir(dir: __DIR__.'/../config-env', name: 'config', group: 'config');
+        $app->dirs()->dir(dir: realpath(__DIR__.'/../config-env'), name: 'config', group: 'config');
         
         $app->boot(\Tobento\App\Boot\App::class);
 
