@@ -44,4 +44,29 @@ class ConfigTest extends TestCase
 
         $app->run();
     }
+    
+    public function testBootMethods()
+    {
+        $app = (new AppFactory())->createApp();
+
+        $app->dirs()
+            ->dir(dir: realpath(__DIR__.'/../config'), name: 'config', group: 'config');
+        
+        $app->boot(\Tobento\App\Boot\Config::class);
+
+        $app->booting();
+
+        $value = $app->get(\Tobento\App\Boot\Config::class)->load(
+            file: 'app.php',
+            key: 'app',
+        );
+        
+        $value = $app->get(\Tobento\App\Boot\Config::class)->get(
+            key: 'app.locale',
+            default: 'en',
+            locale: null
+        );
+        
+        $this->assertSame('de-DE', $value);
+    }
 }
