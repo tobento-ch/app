@@ -23,6 +23,7 @@ You might get started with the [**App Skeleton**](https://github.com/tobento-ch/
     - [Available Boots](#available-boots)
 	   - [App Boot](#app-boot)
        - [Config Boot](#config-boot)
+       - [Functions Boot](#functions-boot)
        - [Error Handling Boot](#error-handling-boot)
        - [Dater Boot](#dater-boot)
     - [Handle Boot Errors](#handle-boot-errors)
@@ -293,11 +294,11 @@ Check out the [**Macro Service**](https://github.com/tobento-ch/service-macro) t
 
 The app boot does the following:
 
+* boots [Config Boot](#config-boot) and [Functions Boot](#functions-boot)
 * loads app config file if exist
 * sets app environment based on app config
 * adds specific config directory for environment
 * sets timezone based on app config
-* helper functions
 * boots the specified boots from app config
 
 ```php
@@ -347,6 +348,53 @@ $value = $app->config('app.key', 'default');
 
 var_dump($value);
 // string(7) "default"
+
+$app->run();
+```
+
+### Functions Boot
+
+The functions boot does the following:
+
+* registers app functions
+* provides register method
+* adds app functions macro
+
+Check out the [**Helper Function Service**](https://github.com/tobento-ch/service-helper-function) to learn more about it in general.
+
+```php
+use Tobento\App\AppFactory;
+use Tobento\App\AppInterface;
+
+use function Tobento\App\{app, directory, config};
+
+$app = (new AppFactory())->createApp();
+    
+$app->boot(\Tobento\App\Boot\Functions::class);
+$app->booting();
+
+// App function:
+var_dump(app() instanceof AppInterface);
+// bool(true)
+
+// Directory function:
+$app->dirs()->dir('dir/to/foo', 'foo');
+
+var_dump(directory('foo'));
+// string(11) "dir/to/foo/"
+
+// Config function:
+$app->boot(\Tobento\App\Boot\Config::class);
+$app->booting();
+
+var_dump(config(key: 'foo', default: 'foo'));
+// string(3) "foo"
+
+// using functions macro:
+// $app->functions(__DIR__.'/my-functions.php');
+
+// using boot method:
+// $app->get(\Tobento\App\Boot\Functions::class)->register(__DIR__.'/my-functions.php');
 
 $app->run();
 ```
