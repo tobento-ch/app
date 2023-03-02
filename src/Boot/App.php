@@ -17,8 +17,6 @@ use Tobento\App\Boot;
 use Tobento\Service\Config\ConfigInterface;
 use Tobento\Service\Config\PhpLoader;
 use Tobento\Service\Config\ConfigLoadException;
-use Tobento\Service\HelperFunction\Functions;
-use Psr\Container\ContainerInterface;
 
 /**
  * App boot.
@@ -27,18 +25,19 @@ class App extends Boot
 {
     public const INFO = [
         'boot' => [
-            'loads app config file',
+            'boots config and functions boot',
+            'loads app config file if exists',
             'sets app environment based on app config',
             'adds specific config directory for environment',
             'sets timezone based on app config',
-            'helper functions',
             'boots the specified boots from app config',
         ],
     ];
     
     public const BOOT = [
         \Tobento\App\Boot\Config::class,
-    ];    
+        \Tobento\App\Boot\Functions::class,
+    ];
     
     /**
      * Boot application services.
@@ -83,11 +82,6 @@ class App extends Boot
         
         // Set the timezone.
         date_default_timezone_set($config->get('app.timezone', 'Europe/Berlin'));
-        
-        // Helper Functions.
-        $this->app->get(Functions::class)->set(ContainerInterface::class, $this->app->container());
-        
-        $this->app->addMacro('functions', [$this->app->get(Functions::class), 'register']);
         
         // Boot.
         $this->app->boot(...$config->get('app.boots', []));
