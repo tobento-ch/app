@@ -41,6 +41,7 @@ class AppTest extends TestCase
         $this->assertSame(
             [
                 'Tobento\App\Boot\Config',
+                'Tobento\App\Boot\Functions',
                 'Tobento\App\Boot\App',
                 'Tobento\App\Boot\ErrorHandling'
             ],
@@ -48,6 +49,7 @@ class AppTest extends TestCase
                 $app->booter()->getBooted()[0]['boot'],
                 $app->booter()->getBooted()[1]['boot'],
                 $app->booter()->getBooted()[2]['boot'],
+                $app->booter()->getBooted()[3]['boot'],
             ]
         );
         
