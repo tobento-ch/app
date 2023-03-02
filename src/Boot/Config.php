@@ -27,7 +27,10 @@ use Tobento\Service\Collection\Translations;
 class Config extends Boot
 {
     public const INFO = [
-        'boot' => 'implements '.ConfigInterface::class,
+        'boot' => [
+            'implements '.ConfigInterface::class,
+            'adds config macro',
+        ],
     ];
     
     /**
