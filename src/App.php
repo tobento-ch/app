@@ -16,12 +16,14 @@ namespace Tobento\App;
 use Psr\Container\ContainerInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Psr\Container\ContainerExceptionInterface;
+use Psr\Clock\ClockInterface;
 use Tobento\Service\Resolver\ResolverInterface;
 use Tobento\Service\Resolver\DefinitionInterface;
 use Tobento\Service\Resolver\OnRule;
 use Tobento\Service\Booting\BooterInterface;
 use Tobento\Service\Booting\InvalidBootException;
 use Tobento\Service\Dir\DirsInterface;
+use Tobento\Service\Clock\SystemClock;
 use Tobento\Service\Macro\Macroable;
 use Throwable;
 
@@ -66,6 +68,7 @@ class App implements AppInterface
     ) {
         $this->set(AppInterface::class, $this);
         $this->set(DirsInterface::class, $dirs);
+        $this->set(ClockInterface::class, new SystemClock());
     }
 
     /**
@@ -88,6 +91,28 @@ class App implements AppInterface
     public function getEnvironment(): string
     {
         return $this->environment;
+    }
+    
+    /**
+     * Set the clock.
+     *
+     * @param ClockInterface $clock
+     * @return static $this
+     */
+    public function setClock(ClockInterface $clock): static
+    {
+        $this->set(ClockInterface::class, $clock)->prototype();
+        return $this;
+    }
+    
+    /**
+     * Returns the clock.
+     *
+     * @return ClockInterface
+     */
+    public function clock(): ClockInterface
+    {
+        return $this->get(ClockInterface::class);
     }
 
     /**
