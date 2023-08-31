@@ -17,6 +17,7 @@ use Tobento\App\Boot;
 use Tobento\Service\Config\ConfigInterface;
 use Tobento\Service\Config\PhpLoader;
 use Tobento\Service\Config\ConfigLoadException;
+use Tobento\Service\Clock\SystemClock;
 
 /**
  * App boot.
@@ -80,8 +81,12 @@ class App extends Boot
             return;
         }
         
-        // Set the timezone.
-        date_default_timezone_set($config->get('app.timezone', 'Europe/Berlin'));
+        // Handle timezone:
+        $timezone = $config->get('app.timezone', 'Europe/Berlin');
+        
+        date_default_timezone_set($timezone);
+
+        $this->app->setClock(new SystemClock(timezone: $timezone));
         
         // Boot.
         $this->app->boot(...$config->get('app.boots', []));
