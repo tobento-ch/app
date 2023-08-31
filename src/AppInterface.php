@@ -16,6 +16,7 @@ namespace Tobento\App;
 use Psr\Container\ContainerInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Psr\Container\ContainerExceptionInterface;
+use Psr\Clock\ClockInterface;
 use Tobento\Service\Resolver\ResolverInterface;
 use Tobento\Service\Resolver\DefinitionInterface;
 use Tobento\Service\Resolver\OnRule;
@@ -41,8 +42,23 @@ interface AppInterface
      *
      * @return string
      */    
-    public function getEnvironment(): string;   
-            
+    public function getEnvironment(): string;
+    
+    /**
+     * Set the clock.
+     *
+     * @param ClockInterface $clock
+     * @return static $this
+     */
+    public function setClock(ClockInterface $clock): static;
+    
+    /**
+     * Returns the clock.
+     *
+     * @return ClockInterface
+     */
+    public function clock(): ClockInterface;
+    
     /**
      * Register a boot or multiple. 
      *
