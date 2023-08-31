@@ -22,6 +22,7 @@
     "require": {
         "php": ">=8.0",
         "psr/container": "^2.0",
+        "psr/clock": "^1.0",
         "tobento/service-macro": "^1.0",
         "tobento/service-helper-function": "^1.0",
         "tobento/service-error-handler": "^1.0",
@@ -29,6 +30,7 @@
         "tobento/service-resolver-container": "^1.0",
         "tobento/service-dir": "^1.0",
         "tobento/service-booting": "^1.0",
+        "tobento/service-clock": "^1.0",
         "tobento/service-collection": "^1.0",
         "tobento/service-config": "^1.0",
         "tobento/service-dater": "^1.0"
