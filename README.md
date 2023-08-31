@@ -19,6 +19,7 @@ You might get started with the [**App Skeleton**](https://github.com/tobento-ch/
         - [On](#on)  
     - [App Booting](#app-booting)
     - [App Directories](#app-directories)
+    - [App Clock](#app-clock)
     - [App Macros](#app-macros)
     - [Available Boots](#available-boots)
 	   - [App Boot](#app-boot)
@@ -270,6 +271,23 @@ var_dump($app->dirs() instanceof DirsInterface);
 ```
 
 Check out the [**Dir Service**](https://github.com/tobento-ch/service-dir) to learn more about dirs in general.
+
+## App Clock
+
+```php
+use Tobento\App\AppFactory;
+use Psr\Clock\ClockInterface;
+
+$app = (new AppFactory())->createApp();
+
+// Get the app clock:
+var_dump($app->clock() instanceof ClockInterface);
+// bool(true)
+
+// or:
+var_dump($app->get(ClockInterface::class) instanceof ClockInterface);
+// bool(true)
+```
 
 ## App Macros
 
