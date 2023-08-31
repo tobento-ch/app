@@ -22,7 +22,9 @@ use Tobento\Service\ErrorHandler\AutowiringThrowableHandlerFactory;
 use Tobento\Service\Dir\DirNotFoundException;
 use Tobento\Service\Resolver\OnRule;
 use Tobento\Service\Resolver\ResolverInterface;
+use Tobento\Service\Clock\SystemClock;
 use Psr\Container\ContainerInterface;
+use Psr\Clock\ClockInterface;
 use Throwable;
     
 /**
@@ -40,6 +42,31 @@ class AppTest extends TestCase
         
         $this->assertSame('dev', $app->getEnvironment());
     }
+    
+    public function testClockMethod()
+    {
+        $app = (new AppFactory())->createApp();
+        
+        $this->assertInstanceof(ClockInterface::class, $app->clock());
+        $this->assertSame($app->get(ClockInterface::class), $app->clock());
+    }
+    
+    public function testSetClockMethod()
+    {
+        $app = (new AppFactory())->createApp();
+        
+        $clock = new SystemClock('UTC');
+        $app->setClock($clock);
+        
+        $this->assertSame($clock, $app->clock());
+        $this->assertSame($clock, $app->get(ClockInterface::class));
+        
+        $clock = new SystemClock('Europe/Berlin');
+        $app->setClock($clock);
+        
+        $this->assertSame($clock, $app->clock());
+        $this->assertSame($clock, $app->get(ClockInterface::class));
+    }    
     
     public function testBooting()
     {
