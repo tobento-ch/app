@@ -82,6 +82,7 @@ var_dump($appFactory instanceof AppFactoryInterface);
 // bool(true)
 
 $app = $appFactory->createApp(
+    id: 'root', // default
     resolverFactory: null, // null|ResolverFactoryInterface
     booter: null, // null|BooterInterface
     dirs: null, // null|DirsInterface
@@ -95,6 +96,7 @@ var_dump($app instanceof AppInterface);
 
 | Parameter | Description |
 | --- | --- |
+| **id** | A unique app id. |
 | **resolverFactory** | If no resolver factory is set, it uses the [Resolver Container](https://github.com/tobento-ch/service-resolver-container). |
 | **booter** | If no booter is set, it uses the [Default Booter](https://github.com/tobento-ch/service-booting#booter). |
 | **dirs** | If no dirs is set, it uses the [Default Dirs](https://github.com/tobento-ch/service-dir#create-dirs). |
