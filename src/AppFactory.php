@@ -32,12 +32,14 @@ class AppFactory implements AppFactoryInterface
     /**
      * Create a new App.
      *
+     * @param string $id
      * @param null|ResolverFactoryInterface $resolverFactory
      * @param null|BooterInterface $booter
      * @param null|DirsInterface $dirs
      * @return AppInterface
      */
     public function createApp(
+        string $id = 'root',
         null|ResolverFactoryInterface $resolverFactory = null,
         null|BooterInterface $booter = null,
         null|DirsInterface $dirs = null,
@@ -55,6 +57,6 @@ class AppFactory implements AppFactoryInterface
             terminateMethods: ['terminate'],
         );
         
-        return new App($resolver, $booter, $dirs);
+        return new App($id, $resolver, $booter, $dirs);
     }
 }
