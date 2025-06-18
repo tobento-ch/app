@@ -30,6 +30,13 @@ use Tobento\Service\Dir\DirsInterface;
 interface AppInterface
 {
     /**
+     * Returns the app id.
+     *
+     * @return string
+     */
+    public function id(): string;
+    
+    /**
      * Set the environment.
      *
      * @param string $environment The environment such as PRODUCTION, DEVELOPMENT and TESTING.
