@@ -31,7 +31,18 @@ use Throwable;
  * AppTest
  */
 class AppTest extends TestCase
-{    
+{
+    public function testIdMethod()
+    {
+        $app = (new AppFactory())->createApp();
+        
+        $this->assertSame('root', $app->id());
+        
+        $app = (new AppFactory())->createApp(id: 'backend');
+        
+        $this->assertSame('backend', $app->id());
+    }
+    
     public function testEnvironmentMethods()
     {
         $app = (new AppFactory())->createApp();
