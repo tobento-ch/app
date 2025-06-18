@@ -38,7 +38,7 @@ class App implements AppInterface
      * @var string The current version.
      */
     public const VERSION = '1.0.0';
-
+    
     /**
      * @var string The current environment.
      */
@@ -57,11 +57,13 @@ class App implements AppInterface
     /**
      * Create a new App.
      *
+     * @param string $id
      * @param ResolverInterface $resolver
      * @param BooterInterface $booter
      * @param DirsInterface $dirs
      */
     public function __construct(
+        protected string $id,
         protected ResolverInterface $resolver,
         protected BooterInterface $booter,
         protected DirsInterface $dirs,
@@ -69,6 +71,16 @@ class App implements AppInterface
         $this->set(AppInterface::class, $this);
         $this->set(DirsInterface::class, $dirs);
         $this->set(ClockInterface::class, new SystemClock());
+    }
+    
+    /**
+     * Returns the app id.
+     *
+     * @return string
+     */
+    public function id(): string
+    {
+        return $this->id;
     }
 
     /**
