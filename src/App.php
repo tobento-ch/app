@@ -37,7 +37,7 @@ class App implements AppInterface
     /**
      * @var string The current version.
      */
-    public const VERSION = '1.0.0';
+    public const VERSION = '2.0.0';
     
     /**
      * @var string The current environment.
