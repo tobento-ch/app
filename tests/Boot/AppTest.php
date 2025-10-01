@@ -73,5 +73,11 @@ class AppTest extends TestCase
         $this->assertSame('en-US', $value);
         
         $app->run();
-    }    
+    }
+    
+    public function tearDown(): void
+    {
+        restore_error_handler();
+        restore_exception_handler();
+    }
 }

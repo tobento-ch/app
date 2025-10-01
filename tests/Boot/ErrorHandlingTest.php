@@ -34,4 +34,10 @@ class ErrorHandlingTest extends TestCase
         
         $this->assertTrue(true);
     }
+    
+    public function tearDown(): void
+    {
+        restore_error_handler();
+        restore_exception_handler();
+    }
 }
