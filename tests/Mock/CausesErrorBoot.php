@@ -23,6 +23,6 @@ class CausesErrorBoot extends Boot
     public function boot(): void
     {
         // Do something which causes an error
-        echo $test();
+        echo @$test();
     }
 }
