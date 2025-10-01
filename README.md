@@ -42,7 +42,7 @@ composer require tobento/app
 
 ## Requirements
 
-- PHP 8.0 or greater
+- PHP 8.4 or greater
 
 # Documentation
 
@@ -56,7 +56,7 @@ Finally, run your app.
 use Tobento\App\AppFactory;
 
 // Create the app
-$app = (new AppFactory())->createApp();
+$app = new AppFactory()->createApp();
 
 // Adding boots
 $app->boot(\Tobento\App\Boot\App::class);
@@ -110,7 +110,7 @@ use Tobento\App\AppFactory;
 
 class Foo {}
 
-$app = (new AppFactory())->createApp();
+$app = new AppFactory()->createApp();
 
 var_dump($app->has(Bar::class));
 // bool(false)
@@ -138,7 +138,7 @@ class Foo
     ) {} 
 }
 
-$app = (new AppFactory())->createApp();
+$app = new AppFactory()->createApp();
 
 $definition = $app->set(Foo::class)->construct('name');
 
@@ -163,7 +163,7 @@ class Foo
 
 class Bar {}
 
-$app = (new AppFactory())->createApp();
+$app = new AppFactory()->createApp();
 
 $foo = $app->make(Foo::class, ['name' => 'value']);
 ```
@@ -185,7 +185,7 @@ class Foo
 
 class Bar {}
 
-$app = (new AppFactory())->createApp();
+$app = new AppFactory()->createApp();
 
 $name = $app->call([Foo::class, 'index'], ['name' => 'value']);
 
@@ -203,7 +203,7 @@ use Tobento\App\AppFactory;
 class AdminUser {}
 class GuestUser {}
 
-$app = (new AppFactory())->createApp();
+$app = new AppFactory()->createApp();
 
 $app->on(AdminUser::class, GuestUser::class);
 
@@ -234,7 +234,7 @@ class ServiceBoot extends Boot
     }
 }
 
-$app = (new AppFactory())->createApp();
+$app = new AppFactory()->createApp();
 
 $app->boot(ServiceBoot::class);
 
@@ -259,7 +259,7 @@ You may add directories for its later usage.
 use Tobento\App\AppFactory;
 use Tobento\Service\Dir\DirsInterface;
 
-$app = (new AppFactory())->createApp();
+$app = new AppFactory()->createApp();
 
 $app->dirs()
     ->dir(dir: 'path/to/config', name: 'config', group: 'config')
@@ -280,7 +280,7 @@ Check out the [**Dir Service**](https://github.com/tobento-ch/service-dir) to le
 use Tobento\App\AppFactory;
 use Psr\Clock\ClockInterface;
 
-$app = (new AppFactory())->createApp();
+$app = new AppFactory()->createApp();
 
 // Get the app clock:
 var_dump($app->clock() instanceof ClockInterface);
@@ -296,7 +296,7 @@ var_dump($app->get(ClockInterface::class) instanceof ClockInterface);
 ```php
 use Tobento\App\AppFactory;
 
-$app = (new AppFactory())->createApp();
+$app = new AppFactory()->createApp();
 
 $app->addMacro('lowercase', function(string $string): string {
     return strtolower($string);
@@ -324,7 +324,7 @@ The app boot does the following:
 ```php
 use Tobento\App\AppFactory;
 
-$app = (new AppFactory())->createApp();
+$app = new AppFactory()->createApp();
 
 $app->boot(\Tobento\App\Boot\App::class);
 
@@ -344,7 +344,7 @@ Check out the [**Config Service**](https://github.com/tobento-ch/service-config/
 use Tobento\App\AppFactory;
 use Tobento\Service\Config\ConfigInterface;
 
-$app = (new AppFactory())->createApp();
+$app = new AppFactory()->createApp();
 
 $app->dirs()->dir(
     dir: 'path/to/config',
@@ -388,7 +388,7 @@ use Tobento\App\AppInterface;
 
 use function Tobento\App\{app, directory, config};
 
-$app = (new AppFactory())->createApp();
+$app = new AppFactory()->createApp();
     
 $app->boot(\Tobento\App\Boot\Functions::class);
 $app->booting();
@@ -428,7 +428,7 @@ The error handling boot does the following:
 ```php
 use Tobento\App\AppFactory;
 
-$app = (new AppFactory())->createApp();
+$app = new AppFactory()->createApp();
 
 $app->boot(\Tobento\App\Boot\ErrorHandling::class);
 
@@ -447,7 +447,7 @@ Check out the [**Dater Service**](https://github.com/tobento-ch/service-dater#do
 use Tobento\App\AppFactory;
 use Tobento\Service\Dater\DateFormatter;
 
-$app = (new AppFactory())->createApp();
+$app = new AppFactory()->createApp();
 
 $app->boot(\Tobento\App\Boot\Dater::class);
 
@@ -480,7 +480,7 @@ class CausesErrorBoot extends Boot
     }
 }
 
-$app = (new AppFactory())->createApp();
+$app = new AppFactory()->createApp();
 
 $app->set(BootErrorHandlersInterface::class, function() use ($app) {
 
@@ -526,7 +526,7 @@ class CustomBoot extends Boot
     }
 }
 
-$app = (new AppFactory())->createApp();
+$app = new AppFactory()->createApp();
 
 $app->boot(CustomBoot::class);
 
@@ -561,7 +561,7 @@ class CustomHttpBoot extends Http
     }
 }
 
-$app = (new AppFactory())->createApp();
+$app = new AppFactory()->createApp();
 
 $app->on(Http::class, CustomHttpBoot::class);
 
@@ -591,7 +591,7 @@ class CustomBoot extends Boot
     }
 }
 
-$app = (new AppFactory())->createApp();
+$app = new AppFactory()->createApp();
 
 $app->boot(CustomBoot::class);
 
