@@ -74,10 +74,4 @@ class AppTest extends TestCase
         
         $app->run();
     }
-    
-    public function tearDown(): void
-    {
-        restore_error_handler();
-        restore_exception_handler();
-    }
 }
