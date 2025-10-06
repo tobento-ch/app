@@ -53,4 +53,12 @@ class ErrorHandling extends Boot
         
         (new ErrorHandlingService($this->app->get(ThrowableHandlersInterface::class)))->register();
     }
+    
+    public function terminate(): void
+    {
+        if (str_contains($_SERVER['argv'][0] ?? '', 'phpunit')) {
+            restore_error_handler();
+            restore_exception_handler();
+        }
+    }
 }
