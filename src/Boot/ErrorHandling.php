@@ -54,11 +54,74 @@ class ErrorHandling extends Boot
         (new ErrorHandlingService($this->app->get(ThrowableHandlersInterface::class)))->register();
     }
     
+    /**
+     * @psalm-suppress InvalidArgument
+     * @psalm-suppress UnusedClosureParam
+     */
     public function terminate(): void
     {
         if (str_contains($_SERVER['argv'][0] ?? '', 'phpunit')) {
-            restore_error_handler();
-            restore_exception_handler();
+            // exception handlers:
+            $res = [];
+
+            while (true) {
+                $previousHandler = set_exception_handler(static fn () => null);
+                restore_exception_handler();
+                
+                if (
+                    is_array($previousHandler)
+                    && $previousHandler[0] instanceof \Tobento\Service\ErrorHandler\ErrorHandling
+                    && $previousHandler[1] === 'handleException'
+                ) {
+                    restore_exception_handler();
+                    continue;
+                }
+
+                if ($previousHandler === null) {
+                    break;
+                }
+
+                $res[] = $previousHandler;
+                restore_exception_handler();
+            }
+
+            $res = array_reverse($res);
+
+            foreach ($res as $handler) {
+                set_exception_handler($handler);
+            }
+            
+            // error handlers:
+            $res = [];
+
+            while (true) {
+                $previousHandler = set_error_handler(
+                    static fn (int $errno, string $errstr, string $errfile = '', int $errline = 0, array $errcontext = []): ?bool => null
+                );
+                restore_error_handler();
+
+                if (
+                    is_array($previousHandler)
+                    && $previousHandler[0] instanceof \Tobento\Service\ErrorHandler\ErrorHandling
+                    && $previousHandler[1] === 'handleError'
+                ) {
+                    restore_error_handler();
+                    continue;
+                }
+
+                if ($previousHandler === null) {
+                    break;
+                }
+
+                $res[] = $previousHandler;
+                restore_error_handler();
+            }
+
+            $res = array_reverse($res);
+
+            foreach ($res as $handler) {
+                set_error_handler($handler);
+            }    
         }
     }
 }
